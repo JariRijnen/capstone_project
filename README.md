@@ -3,6 +3,11 @@
 ## Purpose
 The purpose of this project is to investigate the relations between weather measurements and wildfires in the United States. E.g. one could investigate how much the rainfall in a previous month relates to the occurrence of wildfires, or could investigate how much the temperature influences the spread (size) of wildfires.
 
+### Other scenratios
+**The data was increased by 100x**
+
+
+
 ## data
 
 * wildfires.parquet 
@@ -22,6 +27,8 @@ It consists of daily weather summaries over 150 weather stations across the US f
 ![ER-diagram](/images/ER-diagram.png)
 
 The ER-diagram consists of two facts tables, wildfires and weather_measurements. There are four additional dimension tables: us_state, weather_stations, date_table, time_table.
+
+There are two options to match wildfires with relevant weather stations. The first is to look at the weather stations in the same state as the wildfire, which only requries a simple join. The second is to by looking at the geographical locations; either by the coordinates directly or by the geom variables. This allows filtering by longitude and latitude, or to search for the closest weather station by MIN(ST_Distance(weather_stations.geom, wildfires.geom)).
 
 ## Airflow Data Pipeline
 
