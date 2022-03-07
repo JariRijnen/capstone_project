@@ -7,14 +7,15 @@ The purpose of this project is to investigate the relations between weather meas
 
 * wildfires.parquet 
 
-Wildfires data from (https://www.kaggle.com/rtatman/188-million-us-wildfires). Original is a table in a SQLite database. I saved it to .parquet and saved it on S3 in AWS.
+Wildfires data from [Kaggle](https://www.kaggle.com/rtatman/188-million-us-wildfires). Original is a table in a SQLite database. I saved it to .parquet and saved it on S3 in AWS.
 
 It consists of 1.88 million wildfires that occurred in the US from 1992 to 2015.
 
 * US_weather_all.csv
-Weather data from (https://www.kaggle.com/cavfiumella/us-weather-daily-summaries-1991-2016). Original is 1001 different csv files. I have merged them into one .csv file and saved that on S3 in AWS.
 
-It consists of daily weather summaries over 150 weather stations across the US from 1991 to 1996. In total there are 4,169,412 daily measurements. Not all stations measure the same statistics. For explanations about the variables, (https://github.com/JariRijnen/capstone_project/date/definitions.csv).
+Weather data from [Kaggle](https://www.kaggle.com/cavfiumella/us-weather-daily-summaries-1991-2016). Original is 1001 different csv files. I have merged them into one .csv file and saved that on S3 in AWS.
+
+It consists of daily weather summaries over 150 weather stations across the US from 1991 to 1996. In total there are 4,169,412 daily measurements. Not all stations measure the same statistics. For explanations about the variables, [definitions.csv](https://github.com/JariRijnen/capstone_project/definitions.csv).
 
 ## ER diagram
 
