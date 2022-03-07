@@ -49,13 +49,13 @@ requirements.txt
 
 ## Data
 
-* wildfires.parquet 
+wildfires.parquet 
 
 Wildfires data from [Kaggle](https://www.kaggle.com/rtatman/188-million-us-wildfires). Original is a table in a SQLite database. I saved it to .parquet and saved it on S3 in AWS.
 
 It consists of 1.88 million wildfires that occurred in the US from 1992 to 2015.
 
-* US_weather_all.csv
+US_weather_all.csv
 
 Weather data from [Kaggle](https://www.kaggle.com/cavfiumella/us-weather-daily-summaries-1991-2016). Original is 1001 different csv files. I have merged them into one .csv file and saved that on S3 in AWS.
 
@@ -72,16 +72,16 @@ docker-compose up
 ![airflow-pipeline](/images/airflow_pipeline.png)
 
 The pipeline is locally executed via Airflow. The following steps are undertaken:
-* Begin_execution: a dummy operator to start the pipeline.
-* Resume_redshift_cluster: operator that resumes (if necessary) a Redshift cluster in AWS.
-* drop_tables_if_exists: operator that drops redshift tables if exists.
-* create_staging_tables_redshift: operator to create the redshift tables needed for staging the data. 
-* stage_weather & stage_wildfire: two staging redshift queries that load the data from S3 into the staging tables.
-* insert_fact_tables_redshift: operator to insert redshift data from the staging tables into the fact tabes.
-* insert_dimension_tables: operator to insert data from the staging tables into the dimension tables.
-* data_quality check: operator with two data quality checks for all of the final fact and dimension tables. 
-* pause_redshift_cluster: operator to pause the used redshift cluster.
-* stop_execution: dummy operator to close the pipeline.
+Begin_execution: a dummy operator to start the pipeline.
+Resume_redshift_cluster: operator that resumes (if necessary) a Redshift cluster in AWS.
+drop_tables_if_exists: operator that drops redshift tables if exists.
+create_staging_tables_redshift: operator to create the redshift tables needed for staging the data. 
+stage_weather & stage_wildfire: two staging redshift queries that load the data from S3 into the staging tables.
+insert_fact_tables_redshift: operator to insert redshift data from the staging tables into the fact tabes.
+insert_dimension_tables: operator to insert data from the staging tables into the dimension tables.
+data_quality check: operator with two data quality checks for all of the final fact and dimension tables. 
+pause_redshift_cluster: operator to pause the used redshift cluster.
+stop_execution: dummy operator to close the pipeline.
 
 ## ER diagram
 
@@ -93,7 +93,7 @@ There are two options to match wildfires with relevant weather stations. The fir
 
 ## Data Dictonary
 
-* **Wildfires**
+**Wildfires**
 
 | Column         | Description     |
 |--------------|-----------|
@@ -124,13 +124,13 @@ There are two options to match wildfires with relevant weather stations. The fir
 | us_state      | Two-letter alphabetic code for the state in which the fire burned (or originated), based on the nominal designation in the fire report |
 | us_county      | County, or equivalent, in which the fire burned (or originated), based on nominal designation in the fire report |
 
-* **us_state**
+**us_state**
 
 | Column         | Description     |
 |--------------|-----------|
 | us_state      | Two-letter alphabetic code for US state |
 
-* **time_table**
+**time_table**
 
 | Column         | Description     |
 |--------------|-----------|
@@ -138,7 +138,7 @@ There are two options to match wildfires with relevant weather stations. The fir
 | hour      | Int indicating the hour of the day |
 | minute      | Int indicating the minute of the hour |
 
-* **date_table**
+**date_table**
 
 | Column         | Description     |
 |--------------|-----------|
@@ -149,7 +149,7 @@ There are two options to match wildfires with relevant weather stations. The fir
 | week      | Int indicating the week of the year |
 | year      | Int indicating the year |
 
-* **weather_stations**
+**weather_stations**
 
 | Column         | Description     |
 |--------------|-----------|
@@ -161,7 +161,7 @@ There are two options to match wildfires with relevant weather stations. The fir
 | geom      | Geometry coordinates column based on latitiude and longitude |
 | elevation      | Elevation of weather station above see-level (in meters) |
 
-* **weather_measurements**
+**weather_measurements**
 
 | Column         | Description     |
 |--------------|-----------|
