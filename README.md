@@ -31,7 +31,7 @@ Run locally in Docker container. To start, make sure that Docker is running and 
 docker-compose up
 ```
 
-![airflow-pipeline](/images/airflow-pipeline.png)
+![airflow-pipeline](/images/airflow_pipeline.png)
 
 The pipeline is locally executed via Airflow. The following steps are undertaken:
 * Begin_execution: a dummy operator to start the pipeline.
