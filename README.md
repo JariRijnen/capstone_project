@@ -17,6 +17,7 @@ The database is currently inside a Redshift cluster with the dc2.large single no
 
 ## File Tree
 
+```
 README.md                         
 dags
    |-- wildfire_dag.py
@@ -40,7 +41,7 @@ plugins
    |   |-- insert_tables.py
    |   |-- redshift_cluster.py
    |   |-- stage_to_redshift.py
-
+```
 
 ## data
 
