@@ -93,7 +93,7 @@ There are two options to match wildfires with relevant weather stations. The fir
 
 ## Data Dictonary
 
-* Wildfires
+* **Wildfires**
 
 | Column         | Description     |
 |--------------|-----------|
@@ -124,13 +124,13 @@ There are two options to match wildfires with relevant weather stations. The fir
 | us_state      | Two-letter alphabetic code for the state in which the fire burned (or originated), based on the nominal designation in the fire report |
 | us_county      | County, or equivalent, in which the fire burned (or originated), based on nominal designation in the fire report |
 
-* us_state
+* **us_state**
 
 | Column         | Description     |
 |--------------|-----------|
 | us_state      | Two-letter alphabetic code for US state |
 
-* time_table
+* **time_table**
 
 | Column         | Description     |
 |--------------|-----------|
@@ -138,7 +138,7 @@ There are two options to match wildfires with relevant weather stations. The fir
 | hour      | Int indicating the hour of the day |
 | minute      | Int indicating the minute of the hour |
 
-* date_table
+* **date_table**
 
 | Column         | Description     |
 |--------------|-----------|
@@ -149,7 +149,7 @@ There are two options to match wildfires with relevant weather stations. The fir
 | week      | Int indicating the week of the year |
 | year      | Int indicating the year |
 
-* weather_stations
+* **weather_stations**
 
 | Column         | Description     |
 |--------------|-----------|
@@ -161,7 +161,7 @@ There are two options to match wildfires with relevant weather stations. The fir
 | geom      | Geometry coordinates column based on latitiude and longitude |
 | elevation      | Elevation of weather station above see-level (in meters) |
 
-* weather_measurements
+* **weather_measurements**
 
 | Column         | Description     |
 |--------------|-----------|
@@ -190,7 +190,7 @@ There are two options to match wildfires with relevant weather stations. The fir
 | wdf2 |Direction of fastest 2-minute wind (degrees) |
 | wdf5 |Direction of fastest 5-second wind (degrees) |
 | wdmv |24-hour wind movement |
-| wsf1 |Fastest 1-minute wind speed |
+| wsf1 |Fastest 1-minute win  d speed |
 | wsf2 |Fastest 2-minute wind speed |
 | wsf5 |Fastest 5-second wind speed |
 | wsfg |Peak guest wind speed|
