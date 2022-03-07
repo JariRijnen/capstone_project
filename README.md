@@ -5,14 +5,17 @@ The purpose of this project is to investigate the relations between weather meas
 
 This project consists of an ETL pipeline, which is orchestrated by Airflow (locally) and turns data from S3 storage to a Redshift data model. 
 
-### Other scenratios
+### Other scenarios
 **The data was increased by 100x**
+
 The data pipeline is currently run on with a local airflow. By moving this to the cloud, a bigger load of data can be handled. Redshift itself is already cloud-based, and therefore would have no problems with a 100x of the data.
 
 **The pipelines would be run on a daily basis by 7 am every day.**
+
 This could be achieved by setting the Airflow scheduler to a daily schedule started at 7 am.
 
 **The database needed to be accessed by 100+ people.**
+
 The database is currently inside a Redshift cluster with the dc2.large single node type, with fixed local SSD storage. By upgrading this to a ra3 node, the cluster maintains high performance but now with scalable managed storage.
 
 ## File Tree
@@ -44,7 +47,7 @@ plugins
 requirements.txt
 ```
 
-## data
+## Data
 
 * wildfires.parquet 
 
@@ -88,9 +91,10 @@ The ER-diagram consists of two facts tables, wildfires and weather_measurements.
 
 There are two options to match wildfires with relevant weather stations. The first is to look at the weather stations in the same state as the wildfire, which only requries a simple join. The second is to by looking at the geographical locations; either by the coordinates directly or by the geom variables. This allows filtering by longitude and latitude, or to search for the closest weather station by MIN(ST_Distance(weather_stations.geom, wildfires.geom)).
 
-## Data Dictonairy
+## Data Dictonary
 
 * Wildfires
+
 | Column         | Description     |
 |--------------|-----------|
 | wildfire_id | unique identifier      |
@@ -121,11 +125,13 @@ There are two options to match wildfires with relevant weather stations. The fir
 | us_county      | County, or equivalent, in which the fire burned (or originated), based on nominal designation in the fire report |
 
 * us_state
+
 | Column         | Description     |
 |--------------|-----------|
 | us_state      | Two-letter alphabetic code for US state |
 
 * time_table
+
 | Column         | Description     |
 |--------------|-----------|
 | time      | Time in format HH24:MI |
@@ -133,6 +139,7 @@ There are two options to match wildfires with relevant weather stations. The fir
 | minute      | Int indicating the minute of the hour |
 
 * date_table
+
 | Column         | Description     |
 |--------------|-----------|
 | date      | Date in format DD-MM-YYYY |
@@ -143,6 +150,7 @@ There are two options to match wildfires with relevant weather stations. The fir
 | year      | Int indicating the year |
 
 * weather_stations
+
 | Column         | Description     |
 |--------------|-----------|
 | station_id      | Unique identifier of weather station |
@@ -154,6 +162,7 @@ There are two options to match wildfires with relevant weather stations. The fir
 | elevation      | Elevation of weather station above see-level (in meters) |
 
 * weather_measurements
+
 | Column         | Description     |
 |--------------|-----------|
 | measurement_id      | Unique identifier of weather station |
