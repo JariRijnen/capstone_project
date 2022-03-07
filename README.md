@@ -1,7 +1,7 @@
 ## Capstone Project Wild Fires
 
 ## Purpose
-The purpose of this project is to investigate the relations between weather measurements and wildfires in the United States. E.g. one could investigate how much the rainfall in a previous month relates to the occurrence of wildfires, or could investigate how much the temperature influences the spread (size) of wildfires.
+The purpose of this project is to investigate the relations between weather and wildfires in the United States by performing queries on the final Redshift database. E.g. one could investigate how much the rainfall in a previous month relates to the occurrence of wildfires, or could investigate how much the temperature influences the spread (size) of wildfires.
 
 This project consists of an ETL pipeline, which is orchestrated by Airflow (locally) and turns data from S3 storage to a Redshift data model. 
 
