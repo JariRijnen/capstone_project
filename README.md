@@ -95,6 +95,43 @@ The ER-diagram consists of two facts tables, wildfires and weather_measurements.
 
 There are two options to match wildfires with relevant weather stations. The first is to look at the weather stations in the same state as the wildfire, which only requries a simple join. The second is to by looking at the geographical locations; either by the coordinates directly or by the geom variables. This allows filtering by longitude and latitude, or to search for the closest weather station by MIN(ST_Distance(weather_stations.geom, wildfires.geom)).
 
+## Example Queries
+```
+SELECT COUNT(DISTINCT wf.wildfire_id), wf.fire_size_class, ROUND(AVG(wm.tavg), 2) AS temp, ROUND(AVG(wm.awnd), 2) AS wind, ROUND(AVG(wm.snow), 2) AS snow, ROUND(AVG(wm.prcp), 2) AS rain
+FROM wildfires wf
+JOIN weather_stations ws
+ON ff.us_state = ws.us_state
+JOIN weather_measurements wm
+ON wm.station_id = ws.station_id
+WHERE wf.discovery_date = wm.date
+GROUP BY fire_size_class
+ORDER BY fire_size_class;
+```
+| count| 	fire_size_class| 	temp| 	wind| 	snow| 	rain| 
+|-------|----|-----|-----|-----|-----|
+| 665170	| A| 	18.29| 	3.4| 	0.33| 	0.91| 
+| 921727	| B| 	17.32| 	3.53| 	0.17| 	0.89| 
+| 217533	| C| 	17.27| 	3.6| 	0.12| 	0.9| 
+| 28278	| D| 	18.36| 	3.77| 	0.12| 	0.81| 
+| 14060	| E| 	19.28| 	3.82| 	0.12| 	0.81| 
+| 7777	| F| 	20.12| 	3.76| 	0.09| 	0.74| 
+| 3773	| G| 	19.44| 	3.5| 	0.04| 	0.71| 
+
+And
+
+```
+SELECT ROUND(AVG(wm.tavg), 2) AS temp, ROUND(AVG(wm.awnd), 2) AS wind, ROUND(AVG(wm.snow), 2) AS snow, ROUND(AVG(wm.prcp), 2) AS rain
+FROM weather_measurements wm
+```
+
+|temp|	wind|	snow|	rain|
+|-----|-----|-----|-----|
+|12.89|	3.59|	2.34|	2.34|
+
+These two queries show that wildfires on average occur on hotter days, which makes sense, and that larger fires (higher fire size class) generally have a lower rain and snowfall in that state. Because weather data is averaged over all weather stations within a state, it is possible to register snowfall and a wildfire at the same at.
+
+See [result-queries.ipynb](https://github.com/JariRijnen/capstone_project/result-queries.ipynb) for more examples.
+
 ## Data Dictonary
 
 **Wildfires**
