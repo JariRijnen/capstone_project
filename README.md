@@ -130,7 +130,7 @@ FROM weather_measurements wm
 
 These two queries show that wildfires on average occur on hotter days, which makes sense, and that larger fires (higher fire size class) generally have a lower rain and snowfall in that state. Because weather data is averaged over all weather stations within a state, it is possible to register snowfall and a wildfire at the same at.
 
-See [result-queries.ipynb](https://github.com/JariRijnen/capstone_project/result-queries.ipynb) for more examples.
+See [result_queries.ipynb](https://github.com/JariRijnen/capstone_project/result_queries.ipynb) for more examples.
 
 ## Data Dictonary
 
