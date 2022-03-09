@@ -45,28 +45,28 @@ resume_redshift = RedshiftResumeClusterOperator(
 )
 
 drop_tables_if_exists = DropRedshiftTablesOperator(
-    task_id='drop_tables_if_exists',
+    task_id='Drop_tables_if_exists',
     dag=dag,
     postgres_conn_id="redshift",
     query_list=DropTables.drop_tables
 )
 
 create_staging_tables = CreateRedshiftTablesOperator(
-    task_id='create_staging_tables_redshift',
+    task_id='Create_staging_tables_redshift',
     dag=dag,
     postgres_conn_id="redshift",
     query_list=CreateTables.create_staging_tables
 )
 
 create_tables = CreateRedshiftTablesOperator(
-    task_id='create_tables_redshift',
+    task_id='Create_tables_redshift',
     dag=dag,
     postgres_conn_id="redshift",
     query_list=CreateTables.create_tables
 )
 
 stage_weather_to_redshift = StageToRedshiftOperator(
-    task_id='stage_weather',
+    task_id='Stage_weather',
     dag=dag,
     postgres_conn_id="redshift",
     aws_credentials_id="aws_credentials",
@@ -76,7 +76,7 @@ stage_weather_to_redshift = StageToRedshiftOperator(
 )
 
 stage_wildfire_to_redshift = StageToRedshiftOperator(
-    task_id='stage_wildfire',
+    task_id='Stage_wildfire',
     dag=dag,
     postgres_conn_id="redshift",
     aws_credentials_id="aws_credentials",
@@ -86,14 +86,14 @@ stage_wildfire_to_redshift = StageToRedshiftOperator(
 )
 
 insert_fact_tables_redshift = InsertRedshiftTablesOperator(
-    task_id='insert_fact_tables_redshift',
+    task_id='Insert_fact_tables_redshift',
     dag=dag,
     postgres_conn_id="redshift",
     query_list=InsertTables.insert_fact_tables
 )
 
 insert_dimension_tables = InsertRedshiftTablesOperator(
-    task_id='insert_dimension_tables',
+    task_id='Insert_dimension_tables',
     dag=dag,
     postgres_conn_id="redshift",
     query_list=InsertTables.insert_dimension_tables
