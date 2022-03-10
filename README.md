@@ -81,8 +81,9 @@ Resume_redshift_cluster: operator that resumes (if necessary) a Redshift cluster
 drop_tables_if_exists: operator that drops redshift tables if exists.
 create_staging_tables_redshift: operator to create the redshift tables needed for staging the data. 
 stage_weather & stage_wildfire: two staging redshift queries that load the data from S3 into the staging tables.
-insert_fact_tables_redshift: operator to insert redshift data from the staging tables into the fact tabes.
 insert_dimension_tables: operator to insert data from the staging tables into the dimension tables.
+insert_fact_tables_redshift: operator to insert redshift data from the staging tables into the fact tabes.
+insert_distance_table_redshift: operator to insert distance_table from existing dimension and fact tables into the distance table.
 data_quality check: operator with two data quality checks for all of the final fact and dimension tables. 
 pause_redshift_cluster: operator to pause the used redshift cluster.
 stop_execution: dummy operator to close the pipeline.
@@ -93,7 +94,10 @@ stop_execution: dummy operator to close the pipeline.
 
 The ER-diagram consists of two facts tables, wildfires and weather_measurements. There are four additional dimension tables: us_state, weather_stations, date_table, time_table.
 
-There are two options to match wildfires with relevant weather stations. The first is to look at the weather stations in the same state as the wildfire, which only requries a simple join. The second is to by looking at the geographical locations; either by the coordinates directly or by the geom variables. This allows filtering by longitude and latitude, or to search for the closest weather station by MIN(ST_DistanceSphere(weather_stations.geom, wildfires.geom)).
+There are three options to match wildfires with relevant weather stations. 
+* The first is to look at the weather stations in the same state as the wildfire, which only requries a simple join. 
+* The second is to by looking at the geographical locations; either by the coordinates directly or by the geom variables. This allows filtering by longitude and latitude, or to search for the closest weather station by MIN(ST_DistanceSphere(weather_stations.geom, wildfires.geom)).
+* The third is by joining on the distance_table, which allows for including all weather stations within a certain distance of the wildfire.
 
 ## Example Queries
 ```
@@ -138,7 +142,7 @@ See [result_queries.ipynb](https://github.com/JariRijnen/capstone_project/result
 
 | Column         | Description     |
 |--------------|-----------|
-| wildfire_id | unique identifier      |
+| wildfire_id | Unique identifier      |
 | fod_id      |Global unique identifier |
 | source_system       | Name of or other identifier for source database or system that the record was drawn from|
 |  nwcg_reporting_agency     |Active National Wildlife Coordinating Group (NWCG) Unit Identifier for the agency preparing the fire report |
@@ -235,3 +239,11 @@ See [result_queries.ipynb](https://github.com/JariRijnen/capstone_project/result
 | wsf2 |Fastest 2-minute wind speed |
 | wsf5 |Fastest 5-second wind speed |
 | wsfg |Peak guest wind speed|
+
+**distance_table**
+
+| Column         | Description     |
+|--------------|-----------|
+| wildfire_id      | Unique identifier of wildfire |
+| station_id      | Unique identifier of weather station |
+| distance      | Distance in meters between the corresponding wildfire and weather station |
