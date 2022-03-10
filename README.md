@@ -93,14 +93,14 @@ stop_execution: dummy operator to close the pipeline.
 
 The ER-diagram consists of two facts tables, wildfires and weather_measurements. There are four additional dimension tables: us_state, weather_stations, date_table, time_table.
 
-There are two options to match wildfires with relevant weather stations. The first is to look at the weather stations in the same state as the wildfire, which only requries a simple join. The second is to by looking at the geographical locations; either by the coordinates directly or by the geom variables. This allows filtering by longitude and latitude, or to search for the closest weather station by MIN(ST_Distance(weather_stations.geom, wildfires.geom)).
+There are two options to match wildfires with relevant weather stations. The first is to look at the weather stations in the same state as the wildfire, which only requries a simple join. The second is to by looking at the geographical locations; either by the coordinates directly or by the geom variables. This allows filtering by longitude and latitude, or to search for the closest weather station by MIN(ST_DistanceSphere(weather_stations.geom, wildfires.geom)).
 
 ## Example Queries
 ```
 SELECT COUNT(DISTINCT wf.wildfire_id), wf.fire_size_class, ROUND(AVG(wm.tavg), 2) AS temp, ROUND(AVG(wm.awnd), 2) AS wind, ROUND(AVG(wm.snow), 2) AS snow, ROUND(AVG(wm.prcp), 2) AS rain
 FROM wildfires wf
 JOIN weather_stations ws
-ON ff.us_state = ws.us_state
+ON wf.us_state = ws.us_state
 JOIN weather_measurements wm
 ON wm.station_id = ws.station_id
 WHERE wf.discovery_date = wm.date
