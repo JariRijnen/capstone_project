@@ -31,7 +31,7 @@ default_args = {
 dag = DAG('wildfire_dag',
           default_args=default_args,
           description='Capstone project DAG',
-          schedule_interval='@daily',
+          schedule_interval='@once',
           max_active_runs=1
           )
 
@@ -85,13 +85,6 @@ stage_wildfire_to_redshift = StageToRedshiftOperator(
     format='parquet'
 )
 
-insert_fact_tables_redshift = InsertRedshiftTablesOperator(
-    task_id='Insert_fact_tables_redshift',
-    dag=dag,
-    postgres_conn_id="redshift",
-    query_list=InsertTables.insert_fact_tables
-)
-
 insert_dimension_tables = InsertRedshiftTablesOperator(
     task_id='Insert_dimension_tables',
     dag=dag,
@@ -99,12 +92,26 @@ insert_dimension_tables = InsertRedshiftTablesOperator(
     query_list=InsertTables.insert_dimension_tables
 )
 
+insert_fact_tables_redshift = InsertRedshiftTablesOperator(
+    task_id='Insert_fact_tables_redshift',
+    dag=dag,
+    postgres_conn_id="redshift",
+    query_list=InsertTables.insert_fact_tables
+)
+
+insert_distance_table_redshift = InsertRedshiftTablesOperator(
+    task_id='Insert_distance_table_redshift',
+    dag=dag,
+    postgres_conn_id="redshift",
+    query_list=InsertTables.insert_distance_table
+)
+
 run_quality_checks = DataQualityOperator(
     task_id='Data_quality_check',
     dag=dag,
     postgres_conn_id="redshift",
     tables=['weather_measurements', 'weather_stations', 'date_table', 'time_table', 'us_state',
-            'wildfires']
+            'wildfires', 'distance_table']
 )
 
 pause_redshift = RedshiftPauseClusterOperator(
@@ -120,18 +127,14 @@ start_operator >> resume_redshift
 
 resume_redshift >> drop_tables_if_exists
 
-drop_tables_if_exists >> create_staging_tables
-create_staging_tables >> create_tables
+drop_tables_if_exists >> create_staging_tables >> create_tables
 
-create_tables >> stage_weather_to_redshift
-create_tables >> stage_wildfire_to_redshift
+create_tables >> stage_weather_to_redshift >> insert_dimension_tables
+create_tables >> stage_wildfire_to_redshift >> insert_dimension_tables
 
-stage_weather_to_redshift >> insert_fact_tables_redshift
-stage_wildfire_to_redshift >> insert_fact_tables_redshift
+insert_dimension_tables >> insert_fact_tables_redshift >> insert_distance_table_redshift
 
-insert_fact_tables_redshift >> insert_dimension_tables
-
-insert_dimension_tables >> run_quality_checks
+insert_distance_table_redshift >> run_quality_checks
 
 run_quality_checks >> pause_redshift
 
