@@ -128,6 +128,14 @@ class InsertTables:
         FROM staging_wildfires;
     """
 
-    insert_dimension_tables = [weather_measurements_insert, wildfires_insert]
-    insert_fact_tables = [weather_stations_insert, date_table_insert,
-                          time_table_insert, us_state_insert]
+    distance_insert = """
+        INSERT INTO distance_table
+        SELECT wf.wildfire_id, ws.station_id, ST_DistanceSphere(ws.geom, wf.geom) as distance
+        FROM wildfires wf, weather_stations ws
+        WHERE distance < 500000;
+    """
+
+    insert_dimension_tables = [weather_stations_insert, date_table_insert,
+                               time_table_insert, us_state_insert]
+    insert_fact_tables = [weather_measurements_insert, wildfires_insert]
+    insert_distance_table = [distance_insert]
