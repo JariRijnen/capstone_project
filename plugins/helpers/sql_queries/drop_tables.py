@@ -8,6 +8,7 @@ class DropTables:
     drop_weather_measurements = """DROP TABLE IF EXISTS weather_measurements CASCADE"""
     drop_date_table = """DROP TABLE IF EXISTS date_table CASCADE"""
     drop_us_state = """DROP TABLE IF EXISTS us_state CASCADE"""
+    drop_distance_table = """DROP TABLE IF EXISTS distance_table CASCADE"""
 
     drop_tables = [drop_staging_weather, drop_staging_wildfires, drop_weather_measurements,
-                   drop_wildfires, drop_time_table, drop_weather_stations]
+                   drop_wildfires, drop_distance_table, drop_time_table, drop_weather_stations]

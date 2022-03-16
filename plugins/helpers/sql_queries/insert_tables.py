@@ -1,7 +1,7 @@
 class InsertTables:
     weather_measurements_insert = """
         INSERT INTO weather_measurements
-        SELECT
+        SELECT DISTINCT
                 sw.index,
                 sw.station_id,
                 sw.date,
@@ -36,15 +36,22 @@ class InsertTables:
 
     weather_stations_insert = """
         INSERT INTO weather_stations
+        WITH station_table AS (
+            SELECT DISTINCT station_id,
+                            station_name,
+                            latitude,
+                            longitude,
+                            elevation
+            FROM staging_weather)
         SELECT
-                sw.station_id,
-                sw.station_name,
-                SUBSTRING(split_part(station_name, ', ', 2), 1, 2),
-                sw.latitude,
-                sw.longitude,
-                ST_SetSRID(ST_POINT(sw.longitude, sw.latitude), 4326),
-                sw.elevation
-        FROM staging_weather sw;
+                st.station_id,
+                st.station_name,
+                SUBSTRING(split_part(st.station_name, ', ', 2), 1, 2),
+                st.latitude,
+                st.longitude,
+                ST_SetSRID(ST_POINT(st.longitude, st.latitude), 4326),
+                st.elevation
+        FROM station_table st;
     """
 
     date_table_insert = """
@@ -58,7 +65,7 @@ class InsertTables:
             UNION
             SELECT (to_date(floor(cont_date)::text, 'J'))
             FROM staging_wildfires)
-        SELECT
+        SELECT DISTINCT
                 dt.date,
                 DATE_PART(doy, dt.date),
                 DATE_PART(m, dt.date),
@@ -76,16 +83,16 @@ class InsertTables:
             UNION
             SELECT DECODE(cont_time, '', NULL, cont_time)::time as fire_time
             FROM staging_wildfires)
-        SELECT
+        SELECT DISTINCT
                 fire_time::time,
                 extract(hour from fire_time::time) as hour,
                 extract(minute from fire_time::time) as minute
-        FROM cte_time;  
+        FROM cte_time;
     """
 
     us_state_insert = """
         INSERT INTO us_state
-        SELECT us_state
+        SELECT DISTINCT us_state
         FROM staging_wildfires
     """
 
@@ -121,6 +128,14 @@ class InsertTables:
         FROM staging_wildfires;
     """
 
-    insert_dimension_tables = [weather_measurements_insert, wildfires_insert]
-    insert_fact_tables = [weather_stations_insert, date_table_insert,
-                          time_table_insert, us_state_insert]
+    distance_insert = """
+        INSERT INTO distance_table
+        SELECT wf.wildfire_id, ws.station_id, ST_DistanceSphere(ws.geom, wf.geom) as distance
+        FROM wildfires wf, weather_stations ws
+        WHERE distance < 500000;
+    """
+
+    insert_dimension_tables = [weather_stations_insert, date_table_insert,
+                               time_table_insert, us_state_insert]
+    insert_fact_tables = [weather_measurements_insert, wildfires_insert]
+    insert_distance_table = [distance_insert]

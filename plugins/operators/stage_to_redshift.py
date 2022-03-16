@@ -14,7 +14,7 @@ class StageToRedshiftOperator(BaseOperator):
     ACCESS_KEY_ID '{}'
     SECRET_ACCESS_KEY '{}'
     DELIMITER ','
-    EMPTYASNULL 
+    EMPTYASNULL
     ESCAPE REMOVEQUOTES
     IGNOREHEADER 1;
     """
