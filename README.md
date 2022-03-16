@@ -82,12 +82,12 @@ Run locally in Docker container. To start, make sure that Docker is running and 
 docker-compose up
 ```
 
-### Spark pre process airflow DAF
+### Spark pre process airflow DAD
 
 ![airflow_spark_pipeline](/images/airflow_spark_pipeline.png)
 
 The following steps are undertaken:
-* Begin_execution: a dummy operator to start the pipeline.
+* start_data_pipeline: a dummy operator to start the pipeline.
 * script_to_s3: uploads spark script to S3
 * weather_data_to_s3: uploads us_weather_all.csv to S3
 * wildfire_data_to_s3: uploads wildfires.csv to S3
@@ -95,7 +95,7 @@ The following steps are undertaken:
 * add_steps: add steps to EMR cluster
 * watch_step: check when EMR cluster is finished with all steps
 * terminate_emr_cluster: terminate EMR cluster after use
-* stop_execution: dummy operator to close the pipeline.
+* end_data_pipeline: dummy operator to close the pipeline.
 
 ### Wildfire DAG
 
@@ -273,3 +273,6 @@ See [result_queries.ipynb](https://github.com/JariRijnen/capstone_project/blob/m
 | wildfire_id      | Unique identifier of wildfire |
 | station_id      | Unique identifier of weather station |
 | distance      | Distance in meters between the corresponding wildfire and weather station |
+
+# Credits
+This project is the capstone project of [Udacity Data Engineer Nanodegree](https://www.udacity.com/course/data-analyst-nanodegree--nd002). For the spark DAG, it is based on [this blog](https://www.startdataengineering.com/post/how-to-submit-spark-jobs-to-emr-cluster-from-airflow/#further-reading).
