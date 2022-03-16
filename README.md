@@ -23,12 +23,16 @@ The database is currently inside a Redshift cluster with the dc2.large single no
 ```
 README.md
 dags
+   |-- scripts
+   |   |-- spark_train.py
+   |   |-- wildfires_test_script.py
+   |-- spark_pre_process_airflow.py
    |-- wildfire_dag.py
-definitions.csv
 docker-compose.yaml
 images
    |-- ER-diagram.png
    |-- airflow_pipeline.png
+   |-- airflow_spark_pipeline.png
 plugins
    |-- helpers
    |   |-- __init__.py
@@ -36,6 +40,7 @@ plugins
    |   |   |-- drop_tables.py
    |   |   |-- insert_tables.py
    |-- hooks
+   |   |-- emr.py
    |   |-- redshift_cluster.py
    |-- operators
    |   |-- __init__.py
@@ -44,16 +49,20 @@ plugins
    |   |-- insert_tables.py
    |   |-- redshift_cluster.py
    |   |-- stage_to_redshift.py
+   |-- sensors
+   |   |-- emr.py
 requirements.txt
+result_queries.ipynb
+
 ```
 
 ## Data
 
 ```
-wildfires.parquet 
+wildfires.csv 
 ```
 
-Wildfires data from [Kaggle](https://www.kaggle.com/rtatman/188-million-us-wildfires). Original is a table in a SQLite database. I saved it to .parquet and saved it on S3 in AWS.
+Wildfires data from [Kaggle](https://www.kaggle.com/rtatman/188-million-us-wildfires). Original is a table in a SQLite database.
 
 It consists of 1.88 million wildfires that occurred in the US from 1992 to 2015.
 
@@ -61,11 +70,11 @@ It consists of 1.88 million wildfires that occurred in the US from 1992 to 2015.
 US_weather_all.csv
 ```
 
-Weather data from [Kaggle](https://www.kaggle.com/cavfiumella/us-weather-daily-summaries-1991-2016). Original is 1001 different csv files. I have merged them into one .csv file and saved that on S3 in AWS.
+Weather data from [Kaggle](https://www.kaggle.com/cavfiumella/us-weather-daily-summaries-1991-2016). Original is 1001 different csv files. I have merged them into one .csv file.
 
 It consists of daily weather summaries over 450 weather stations across the US from 1991 to 2016. In total there are 4,169,412 daily measurements. Not all stations measure the same statistics. Empty columns were excluded.
 
-## Airflow Data Pipeline
+## Airflow Data Pipelines
 
 Run locally in Docker container. To start, make sure that Docker is running and execute 
 
@@ -73,9 +82,26 @@ Run locally in Docker container. To start, make sure that Docker is running and 
 docker-compose up
 ```
 
-![airflow-pipeline](/images/airflow_pipeline.png)
+### Spark pre process airflow DAF
 
-The pipeline is locally executed via Airflow. The following steps are undertaken:
+![airflow_spark_pipeline](/images/airflow_spark_pipeline.png)
+
+The following steps are undertaken:
+* Begin_execution: a dummy operator to start the pipeline.
+* script_to_s3: uploads spark script to S3
+* weather_data_to_s3: uploads us_weather_all.csv to S3
+* wildfire_data_to_s3: uploads wildfires.csv to S3
+* create_emr_cluster: create EMR cluster in AWS
+* add_steps: add steps to EMR cluster
+* watch_step: check when EMR cluster is finished with all steps
+* terminate_emr_cluster: terminate EMR cluster after use
+* stop_execution: dummy operator to close the pipeline.
+
+### Wildfire DAG
+
+![airflow_wildfire_pipeline](/images/airflow_wildfire_pipeline.png)
+
+The following steps are undertaken:
 * Begin_execution: a dummy operator to start the pipeline.
 * Resume_redshift_cluster: operator that resumes (if necessary) a Redshift cluster in AWS.
 * Drop_tables_if_exists: operator that drops redshift tables if exists.
