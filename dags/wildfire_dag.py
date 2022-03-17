@@ -123,19 +123,9 @@ pause_redshift = RedshiftPauseClusterOperator(
 
 end_operator = DummyOperator(task_id='Stop_execution',  dag=dag)
 
-start_operator >> resume_redshift
 
-resume_redshift >> drop_tables_if_exists
-
+start_operator >> resume_redshift >> drop_tables_if_exists
 drop_tables_if_exists >> create_staging_tables >> create_tables
-
-create_tables >> stage_weather_to_redshift >> insert_dimension_tables
-create_tables >> stage_wildfire_to_redshift >> insert_dimension_tables
-
+create_tables >> [stage_weather_to_redshift, stage_wildfire_to_redshift] >> insert_dimension_tables
 insert_dimension_tables >> insert_fact_tables_redshift >> insert_distance_table_redshift
-
-insert_distance_table_redshift >> run_quality_checks
-
-run_quality_checks >> pause_redshift
-
-pause_redshift >> end_operator
+insert_distance_table_redshift >> run_quality_checks >> pause_redshift >> end_operator
