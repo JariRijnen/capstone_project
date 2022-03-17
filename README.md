@@ -82,7 +82,7 @@ Run locally in Docker container. To start, make sure that Docker is running and 
 docker-compose up
 ```
 
-### Spark pre process airflow DAD
+### Spark pre process airflow DAG
 
 ![airflow_spark_pipeline](/images/airflow_spark_pipeline.png)
 
