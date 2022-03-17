@@ -24,18 +24,20 @@ The database is currently inside a Redshift cluster with the dc2.large single no
 README.md
 dags
    |-- scripts
-   |   |-- spark_train.py
    |   |-- wildfires_test_script.py
    |-- spark_pre_process_airflow.py
    |-- wildfire_dag.py
 docker-compose.yaml
 images
    |-- ER-diagram.png
-   |-- airflow_pipeline.png
    |-- airflow_spark_pipeline.png
+   |-- airflow_wildfire_pipeline.png
 plugins
    |-- helpers
    |   |-- __init__.py
+   |   |-- emr_cluster_config.py
+   |   |-- local_to_s3.py
+   |   |-- spark_steps.py
    |   |-- sql_queries
    |   |   |-- drop_tables.py
    |   |   |-- insert_tables.py
@@ -53,7 +55,6 @@ plugins
    |   |-- emr.py
 requirements.txt
 result_queries.ipynb
-
 ```
 
 ## Data
