@@ -119,11 +119,11 @@ The following steps are undertaken:
 
 ![ER-diagram](/images/ER-diagram.png)
 
-The ER-diagram consists of two facts tables, wildfires and weather_measurements. There are five additional dimension tables: us_state, weather_stations, date_table, time_table, distance_table.
+The ER-diagram consists of two facts tables, wildfires and weather_measurements. There are five additional dimension tables: us_state, weather_stations, date_table, time_table and distance_table.
 
 There are three options to match wildfires with relevant weather stations. 
 * The first is to look at the weather stations in the same state as the wildfire, which only requries a simple join. 
-* The second is to by looking at the geographical locations; either by the coordinates directly or by the geom variables. This allows filtering by longitude and latitude, or to search for the closest weather station by MIN(ST_DistanceSphere(weather_stations.geom, wildfires.geom)).
+* The second is by looking at the geographical locations; either by the coordinates directly or by the geom variables. This allows filtering by longitude and latitude, or to search for the closest weather station by MIN(ST_DistanceSphere(weather_stations.geom, wildfires.geom)).
 * The third is by joining on the distance_table, which allows for including all weather stations within a certain distance of the wildfire.
 
 ## Example Queries
@@ -159,7 +159,7 @@ FROM weather_measurements wm
 |-----|-----|-----|-----|
 |12.89|	3.59|	2.34|	2.34|
 
-These two queries show that wildfires on average occur on hotter days, which makes sense, and that larger fires (higher fire size class) generally have a lower rain and snowfall in that state. Because weather data is averaged over all weather stations within a state, it is possible to register snowfall and a wildfire at the same at.
+These two queries show that wildfires on average occur on hotter days, which makes sense, and that larger fires (higher fire size class) generally have a lower rain and snowfall in that state. Because this weather data is averaged over all weather stations within a state, it is possible to register snowfall and a wildfire at the same time.
 
 See [result_queries.ipynb](https://github.com/JariRijnen/capstone_project/blob/main/result_queries.ipynb) for more examples.
 
