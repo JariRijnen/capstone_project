@@ -1,6 +1,7 @@
 # based on https://www.startdataengineering.com/post/how-to-submit-spark-jobs-to-emr-cluster-from-airflow/#further-reading # noqa
 
 from datetime import datetime, timedelta
+import dotenv
 
 from airflow import DAG
 from airflow.operators.dummy import DummyOperator
