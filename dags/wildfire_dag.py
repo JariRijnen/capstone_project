@@ -1,4 +1,6 @@
 from datetime import datetime, timedelta
+import os
+from dotenv import load_dotenv
 
 from airflow import DAG
 from airflow.operators.dummy import DummyOperator
@@ -16,6 +18,11 @@ from operators.data_quality import DataQualityOperator
 from helpers.sql_queries.drop_tables import DropTables
 from helpers.sql_queries.create_tables import CreateTables
 from helpers.sql_queries.insert_tables import InsertTables
+
+load_dotenv()
+aws_credentials = os.getenv('aws_credentials')
+s3_weather_location = os.getenv('s3_weather_location')
+s3_wildfire_location = os.getenv('s3_wildfire_location')
 
 
 default_args = {
