@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 
+load_dotenv()
 s3_logs_folder = os.getenv('s3_logs_folder')
 
 
