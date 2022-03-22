@@ -23,8 +23,6 @@ The database is currently inside a Redshift cluster with the dc2.large single no
 ```
 README.md
 dags
-   |-- scripts
-   |   |-- wildfires_test_script.py
    |-- spark_pre_process_airflow.py
    |-- wildfire_dag.py
 docker-compose.yaml
@@ -41,6 +39,7 @@ plugins
    |   |-- sql_queries
    |   |   |-- drop_tables.py
    |   |   |-- insert_tables.py
+   |   |-- wildfires_spark_script.py
    |-- hooks
    |   |-- emr.py
    |   |-- redshift_cluster.py
