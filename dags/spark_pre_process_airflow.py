@@ -17,8 +17,6 @@ from airflow.providers.amazon.aws.operators.emr_terminate_job_flow import (
 from airflow.providers.amazon.aws.sensors.emr_step import EmrStepSensor
 
 load_dotenv()
-
-
 aws_credentials = os.getenv('aws_credentials')
 BUCKET_NAME = os.getenv('BUCKET_NAME')
 wildfire_local_data = os.getenv('wildfire_local_data')
